@@ -7,10 +7,27 @@ from lxml import etree
 # [sony pix](http://www.sonypix.in/schedule.php)
 # [zee studio](http://zeestudio.tv/schedule/)
 
+WEBSITES_LIST=(
+	('movies now','http://moviesnow.co.in/schedule'),
+	('star movies','http://www.starmovies.in/Schedule/Schedule.aspx'),
+	('hbo','http://www.hbosouthasia.com/movie-schedule.php'),
+	('sony pix','http://www.sonypix.in/schedule.php'),
+	('zee studio','http://zeestudio.tv/schedule/'),
+)
+WEBSITES_DICT={
+	'movies_now':('http://moviesnow.co.in/schedule','.movieThumb'),
+	'star_movies':('http://www.starmovies.in/Schedule/Schedule.aspx','.accordion li'),
+	'hbo':('http://www.hbosouthasia.com/movie-schedule.php','.schedule_timeline_block'),
+	'sony_pix':('http://www.sonypix.in/schedule.php','.schedule'),
+	'zee_studio':('http://zeestudio.tv/schedule/','li.record'),
+}
+def query_sites():
+
+
 #======================================MOVIES NOW=================
 d = pq(url='http://moviesnow.co.in/schedule')
-boxes=d('#layout').find('.movieThumb')
-for i in boxes:
+boxes=d.find('.movieThumb')
+for i in boxes2:
 	box=pq(i)
 	print (box(".txt14").text())
 	print (box(".txt15").text())
@@ -18,7 +35,7 @@ for i in boxes:
 
 #======================================Star Movies================
 d = pq(url='http://www.starmovies.in/Schedule/Schedule.aspx')
-boxes=d('#slider-id').find('li')
+boxes=d.find('.accordion li')
 for i in boxes: 
 	box=pq(i)
 	if 'rptCurrentDay' in box.attr("id"):
