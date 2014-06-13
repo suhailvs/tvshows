@@ -50,7 +50,7 @@ class WEBParser:
 			elif site=='hbo':
 				content= box.text()		
 				time=content.rsplit(' ',2)
-				item=(time[1]+time[2], time[0],)
+				item=(time[1]+' '+time[2], time[0],)
 
 				# limit for only today items
 				if time[2]=='PM':
@@ -83,15 +83,29 @@ class Json_handlers:
 			<html lang="en">
 				<head>
 				  <meta charset="utf-8">
-				  <title>TV Schedules</title>				  
+				  <title>TV Schedules</title>
+				  <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">				  
 				</head>
-				<body><h1>Date:{0}</h1>'''.format(str(datetime.datetime.now()).split()[0])
-		for key,value in data.iteritems():
-			html+='<h1>{0}</h1><ul>'.format(key)
-			for time,name in value:
-				html+="<li><strong>{time}:</strong>{name}</li>".format(time=time,name=name)
-			html+='</ul>'
-		html+='</body></html>'
+				<body><h1>Date:<span class="label label-default">{0}</span></h1>
+				<div class="row">
+					'''.format(str(datetime.datetime.now()).split()[0])
+		for i,key in enumerate(data):	
+			if i in [3,7]:html+='</div><div class="row">'
+			html+='''
+		<div class="col-md-4" style="padding:20px;">
+			<div class="panel panel-default">
+				<!-- Default panel contents -->
+				<div class="panel-heading"><h4><span class="label label-default">{0}</span></h4></div>
+				<!-- List group -->
+  				<ul class="list-group">'''.format(key)
+			for time,name in data[key]:
+				if len(time)==7:time='0'+time
+				if len(name)>39:name=name[:36]+'...'
+
+				html+='<li class="list-group-item"><strong><code>{time}</code> {name}</strong></li>'.format(time=time,name=name)
+			html+='</ul></div></div><!--/col-md-4-->'
+
+		html+='</div><!--/row--></body></html>'
 		fp=open('index.html','w')
 		fp.write(html)
 		fp.close()
