@@ -1,6 +1,6 @@
 from pyquery import PyQuery as pq
 from lxml import etree
-import json
+import json,datetime
 
 class WEBParser:
 	"""
@@ -85,7 +85,7 @@ class Json_handlers:
 				  <meta charset="utf-8">
 				  <title>TV Schedules</title>				  
 				</head>
-				<body>'''	
+				<body><h1>Date:{0}</h1>'''.format(str(datetime.datetime.now()).split()[0])
 		for key,value in data.iteritems():
 			html+='<h1>{0}</h1><ul>'.format(key)
 			for time,name in value:
