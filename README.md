@@ -16,6 +16,5 @@ USAGE
 =====
 
 	>>> from tvshow_pyquery import TVSchedule
-    >>> today_datas=TVSchedule()
-    >>> today_datas.parse_site('movies_now')
-
+	>>> today_datas=TVSchedule()
+	>>> today_datas.save_json()
