@@ -69,7 +69,7 @@ class TVSchedule:
 				json_data[key]=cur_item
 		return json_data
 
-	def save_json(self,filename='data.txt'):
+	def save_json(self,filename='data.json'):
 		data=self.parse_all()
 		with open(filename, 'w') as outfile:
 			json.dump(data, outfile)

@@ -1,3 +1,26 @@
-My GitHub Pag
-sik fkjasfdlkjaslf sdflk
-asdfas:wqe
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>TV Schedules</title>
+  <script src="http://code.jquery.com/jquery-1.10.2.js"></script>
+</head>
+<body>
+ 
+<script>
+$.getJSON("https://raw.githubusercontent.com/suhailvs/tvshows/gh-pages/data.json", function(data){
+  var items = [];  
+  $.each( data, function( key, val ) {
+    items.push( "<li>" + key + "</li>" );
+  });
+ 
+  $( "<ul/>", {
+    "class": "my-new-list",
+    html: items.join("")
+  }).appendTo( "body" );
+});
+</script>
+ 
+</body>
+</html>
+
