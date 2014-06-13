@@ -15,6 +15,13 @@ Channel list
 USAGE
 =====
 
-	>>> from tvshow_pyquery import TVSchedule
-	>>> today_datas=TVSchedule()
-	>>> today_datas.save_json()
+To create Html and Json file, just run:
+
+	python tvshow_pyquery.py
+
+to work with python:
+
+	import tvshow_pyquery
+	today_datas=tvshow_pyquery.Json_handlers()
+	today_datas.save_json()
+	today_datas.create_site()

@@ -2,7 +2,7 @@ from pyquery import PyQuery as pq
 from lxml import etree
 import json
 
-class TVSchedule:
+class WEBParser:
 	"""
 	USAGE
 	=====
@@ -12,7 +12,7 @@ class TVSchedule:
 	>>> today_datas.save_json()
 	"""
 
-	def download_sites(self):
+	def _download_sites(self):
 		datas=dict()
 		for key,value in self.WEBSITES_DICT.iteritems():
 			d = pq(url=value[0])
@@ -27,8 +27,9 @@ class TVSchedule:
 			'sony_pix':('http://www.sonypix.in/schedule.php','.schedule'),
 			'zee_studio':('http://zeestudio.tv/schedule/','li.record'),
 		}
+		self.DATAS=self._download_sites()
 		
-	def parse_site(self,boxes,site):
+	def _parse_site(self,boxes,site):
 		items=[]
 		for i in boxes:
 			box=pq(i)
@@ -61,15 +62,46 @@ class TVSchedule:
 
 	def parse_all(self):
 		json_data=dict()
-		downloaded_data=self.download_sites()
+		downloaded_data=self.DATAS#self.download_sites()
 		for key in self.WEBSITES_DICT:
-			cur_item=self.parse_site(downloaded_data[key],key)
+			cur_item=self._parse_site(downloaded_data[key],key)
 			if cur_item:
-				print ('='*10,'\n',cur_item)
+				#print ('='*10,'\n',cur_item)
 				json_data[key]=cur_item
 		return json_data
 
+
+class Json_handlers:
+	def __init__(self):		
+		print('parsing.... please wait. This may take few minutes.')
+		self.parser=WEBParser()
+	def create_site(self):		
+		# data= {"movies_now": [["05:50 AM", "Hot Shots!"], ....
+		data=self.parser.parse_all()	
+		html='''
+		<!doctype html>
+			<html lang="en">
+				<head>
+				  <meta charset="utf-8">
+				  <title>TV Schedules</title>				  
+				</head>
+				<body>'''	
+		for key,value in data.iteritems():
+			html+='<h1>{0}</h1><ul>'.format(key)
+			for time,name in value:
+				html+="<li><strong>{time}:</strong>{name}</li>".format(time=time,name=name)
+			html+='</ul>'
+		html+='</body></html>'
+		fp=open('index.html','w')
+		fp.write(html)
+		fp.close()
+
 	def save_json(self,filename='data.json'):
-		data=self.parse_all()
+		data=self.parser.parse_all()
 		with open(filename, 'w') as outfile:
 			json.dump(data, outfile)
+
+if __name__ == "__main__":
+	today_datas=Json_handlers()
+	today_datas.save_json()
+	today_datas.create_site()
