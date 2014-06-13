@@ -8,7 +8,7 @@
 <body>
  
 <script>
-$.getJSON("https://raw.githubusercontent.com/suhailvs/tvshows/gh-pages/data.json", function(data){
+$.getJSON("data.json", function(data){
   var items = [];  
   $.each( data, function( key, val ) {
     items.push( "<li>" + key + "</li>" );
